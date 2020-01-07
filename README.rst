@@ -42,6 +42,19 @@ Documentation can be found at `FlashText Read the Docs
 
 Usage
 -----
+**Highlight keywords**
+
+    >>> This function searches in the string for all keywords present in corpus , Keywords present are Highlighted and set Priprity as 1 .
+    >>> from flashtext import KeywordProcessor
+    >>> keyword_processor = KeywordProcessor()
+    >>> keyword_processor.add_keyword('Big Apple')
+    >>> keyword_processor.add_keyword('Bay Area')
+    >>> new_sentence = keyword_processor.highlight_keywords('I love Big Apple and bay area.')
+    >>> new_sentence
+    >>> 'I love (Big Apple -highlighted- ) and (bay area -highlighted- ).'
+    >>> priority
+    >>> 1
+ 
 Extract keywords
     >>> from flashtext import KeywordProcessor
     >>> keyword_processor = KeywordProcessor()
