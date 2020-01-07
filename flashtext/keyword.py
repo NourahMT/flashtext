@@ -679,21 +679,25 @@ class KeywordProcessor(object):
                     new_sentence.append(current_word)
             idx += 1
         return "".join(new_sentence)
+    
     def highlight_keywords(self, sentence):
         """Searches in the string for all keywords present in corpus.
-        Keywords present are replaced by the clean name and a new string is returned.
+        Keywords present are Highlighted and priprity  new string  returned.
         Args:
-            sentence (str): Line of text where we will replace keywords
+            sentence (str): Line of text where we will highlight keywords
         Returns:
-            new_sentence (str): Line of text with replaced keywords
-        Examples:
+            new_sentence (str): Line of text with Highlighted keywords.
+            priority : 1 if keyword is found , 0 if not .
+        Example:
             >>> from flashtext import KeywordProcessor
             >>> keyword_processor = KeywordProcessor()
-            >>> keyword_processor.add_keyword('Big Apple', 'New York')
+            >>> keyword_processor.add_keyword('Big Apple')
             >>> keyword_processor.add_keyword('Bay Area')
-            >>> new_sentence = keyword_processor.replace_keywords('I love Big Apple and bay area.')
+            >>> new_sentence = keyword_processor.highlight_keywords('I love Big Apple and bay area.')
             >>> new_sentence
-            >>> 'I love New York and Bay Area.'
+            >>> 'I love (Big Apple -highlighted- ) and (bay area -highlighted- ).'
+            >>> priority
+            >>> 1
         """
         if not sentence:
             # if sentence is empty or none just return the same.
@@ -704,6 +708,7 @@ class KeywordProcessor(object):
         new_sentence = []
         orig_sentence = sentence
         prio = 0;
+        
         if not self.case_sensitive:
             sentence = sentence.lower()
             
@@ -764,7 +769,7 @@ class KeywordProcessor(object):
                             current_word = current_word_continued
                     current_dict = self.keyword_trie_dict
                     if longest_sequence_found:
-                        #new_sentence.append(longest_sequence_found + current_white_space)
+                        # highlight the original word and set priority as 1 
                         new_sentence.append("<span style=\"background-color: #FFFF00;\">"+ current_word[:-1] +"</span>"+ current_white_space) 
                         prio = 1;
                         current_word = ''
@@ -801,7 +806,7 @@ class KeywordProcessor(object):
             if idx + 1 >= sentence_len:
                 if self._keyword in current_dict:
                     sequence_found = current_dict[self._keyword]
-                   # new_sentence.append(sequence_found)
+                    # highlight original word and set priority as 1 
                     new_sentence.append("<span style=\"background-color: #FFFF00;\">"+ current_word[:-1] +"</span>"+ current_white_space)
                     prio = 1; 
                 else:
